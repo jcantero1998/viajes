@@ -27,7 +27,9 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getAlbums();
+    this.google.initialized$.subscribe(() => {
+      this.getAlbums();
+    });
   }
 
   async getAlbums() {
