@@ -1,21 +1,13 @@
 <div class="container">
   <div fxLayout="column" fxLayoutAlign="center center">
-    <h1 style="padding: 20px; margin-top: 20px;">❤️ Nuestros viajes ❤️</h1>
+    <h2 style="padding: 20px; margin-top: 20px;">❤️ Nuestras aventuras ❤️</h2>
   </div>
 
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" class="gallery-text">
-    <mat-tab label="Paso del oso"><app-gallery [ruta]="'assets/images/pasodeloso/'"></app-gallery></mat-tab>
-    <mat-tab label="Biguezal"><app-gallery [ruta]="'assets/images/biguezal/'"></app-gallery></mat-tab>
-    <mat-tab label="Ibañeta"><app-gallery [ruta]="'assets/images/ibaneta/'"></app-gallery></mat-tab>
-    <mat-tab label="Donosti"><app-gallery [ruta]="'assets/images/donosti/'"></app-gallery></mat-tab>
-    <mat-tab label="Zaragoza"><app-gallery [ruta]="'assets/images/zaragoza/'"></app-gallery></mat-tab>
-    <mat-tab label="Javierada"><app-gallery [ruta]="'assets/images/javierada/'"></app-gallery></mat-tab>
-    <mat-tab label="Saint jean pied de port"><app-gallery [ruta]="'assets/images/saintjeanpieddeport/'"></app-gallery></mat-tab>
-    <mat-tab label="Sos"><app-gallery [ruta]="'assets/images/sos/'"></app-gallery></mat-tab>
-    <mat-tab label="Valencia"><app-gallery [ruta]="'assets/images/valencia/'"></app-gallery></mat-tab>
-    <mat-tab label="Burdeos"><app-gallery [ruta]="'assets/images/burdeos/'"></app-gallery></mat-tab>
+    <mat-tab *ngFor="let album of albums; let index = index" label="{{album.title}}">
+      <app-gallery [album]="album"></app-gallery>
+    </mat-tab>
   </mat-tab-group>
-
 </div>
 
 <button mat-fab *ngIf="showScrollButton" (click)="scrollToTop()" class="scroll-icon">

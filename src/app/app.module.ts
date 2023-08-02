@@ -9,6 +9,7 @@ import {GalleryComponent} from './components/gallery/gallery.component';
 import {GalleryModalComponent} from './components/gallery-modal/gallery-modal.component';
 import { NgOptimizedImage } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http';
+import { OAuthModule } from 'angular-oauth2-oidc';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +24,8 @@ import { HttpClientModule } from '@angular/common/http';
     FlexLayoutModule,
     HammerModule,
     NgOptimizedImage,
-    HttpClientModule
+    HttpClientModule,
+    OAuthModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
