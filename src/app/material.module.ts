@@ -1,12 +1,12 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatButtonModule} from '@angular/material/button';
-import {MatTabsModule} from '@angular/material/tabs';
-
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [],
@@ -17,7 +17,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatGridListModule,
     MatDialogModule,
     MatButtonModule,
-    MatTabsModule
+    MatTabsModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     CommonModule,
@@ -26,8 +27,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatGridListModule,
     MatDialogModule,
     MatButtonModule,
-    MatTabsModule
-  ]
+    MatTabsModule,
+    MatProgressSpinnerModule
+  ],
 })
-export class MaterialModule {
-}
+export class MaterialModule {}
