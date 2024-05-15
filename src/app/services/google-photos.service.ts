@@ -36,11 +36,14 @@ export class GooglePhotosService {
     return this.http.get(url, { headers });
   }
 
-  // Método para obtener las fotos de un álbum específico.
-  getPhotosFromAlbum(albumId: string): Observable<any> {
+  // Método para obtener las fotos de un álbum específico, con posibilidad de cargar más fotos usando nextPageToken.
+  getPhotosFromAlbum(albumId: string, nextPageToken?: string): Observable<any> {
     const url = `${this.API_URL}/mediaItems:search`;
     const headers = this.getAuthorizationHeader();
-    const body = { albumId };
+    const body: any = { albumId };
+    if (nextPageToken) {
+      body.pageToken = nextPageToken;
+    }
     return this.http.post(url, body, { headers });
   }
 }

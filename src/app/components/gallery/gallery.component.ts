@@ -34,13 +34,13 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   async createGallery() {
     try {
-      for (let i = 0; i < this.album.galleryImage.length; i++) {
+      for (let i = 0; i < this.album.photosFromAlbum.mediaItems.length; i++) {
         this.gallery.push({
-          src: this.album.galleryImage[i].baseUrl,
+          src: this.album.photosFromAlbum.mediaItems[i].baseUrl,
           position: i,
           alt: `${this.album.title} ${i}`,
           first: i === 0,
-          last: i === this.album.galleryImage.length - 1,
+          last: i === this.album.photosFromAlbum.mediaItems.length - 1,
         });
       }
     } catch (error) {

@@ -4,6 +4,8 @@ import { GooglePhotosService } from './services/google-photos.service';
 import { Album } from './model/album';
 import { firstValueFrom } from 'rxjs';
 import { GoogleApiService } from './services/google-api.service';
+import { SharedAlbum, SharedAlbumsForUser } from './model/shared-albums-for-user';
+import { PhotosFromAlbum } from './model/photos-from-album';
 
 @Component({
   selector: 'app-root',
@@ -34,19 +36,18 @@ export class AppComponent implements OnInit {
 
   async getAlbums() {
     try {
-      const data: any = await firstValueFrom(this.googlePhotosService.getSharedAlbumsForUser());
+      const data: SharedAlbumsForUser = await firstValueFrom(this.googlePhotosService.getSharedAlbumsForUser());
 
       if (data.sharedAlbums && data.sharedAlbums.length > 0) {
 
         //Filtramos los albumes y nos quedamos unicamente con los que tengan fotos
-        const filteredAlbums = data.sharedAlbums.filter((element: any) => parseInt(element.mediaItemsCount) > 1);
-
+        const filteredAlbums = data.sharedAlbums.filter((element: SharedAlbum) => parseInt(element.mediaItemsCount) > 1);
         const albumPromises = filteredAlbums.map(async (element: any) => {
-          const galleryImage = await this.getPhotosFromAlbum(element.id);
+          const photosFromAlbum: PhotosFromAlbum = await this.getPhotosFromAlbum(element.id);
           return {
             id: element.id,
             title: element.title,
-            galleryImage,
+            photosFromAlbum
           };
         });
 
@@ -57,23 +58,38 @@ export class AppComponent implements OnInit {
     }
   }
 
-  async getPhotosFromAlbum(id: string) {
+  async getPhotosFromAlbum(id: string): Promise<PhotosFromAlbum> {
     try {
-      const data: any = await firstValueFrom(this.googlePhotosService.getPhotosFromAlbum(id));
+      const data: PhotosFromAlbum = await firstValueFrom(this.googlePhotosService.getPhotosFromAlbum(id));
+
       if (data && data.mediaItems && Array.isArray(data.mediaItems)) {
-        const filteredMediaItems = data.mediaItems.filter((item: any) => item.mimeType != "video/mp4");
-        return filteredMediaItems;
+        data.mediaItems = data.mediaItems.filter((item: any) => item.mimeType != "video/mp4");
+        return data;
       } else {
         console.warn('Los datos recibidos no contienen mediaItems o no es un arreglo.');
-        return [];
+        return { mediaItems: [], nextPageToken: null };
       }
     } catch (error) {
       console.error('Error obteniendo fotos del álbum:', error);
-      return [];
+      return { mediaItems: [], nextPageToken: null };
     }
   }
 
-
+  async loadMorePhotosFromAlbum(id: string, nextPageToken?: string): Promise<PhotosFromAlbum> {
+    try {
+      const data: PhotosFromAlbum = await firstValueFrom(this.googlePhotosService.getPhotosFromAlbum(id, nextPageToken));
+      if (data && data.mediaItems && Array.isArray(data.mediaItems)) {
+        const filteredMediaItems = data.mediaItems.filter((item: any) => item.mimeType != "video/mp4");
+        return { mediaItems: filteredMediaItems, nextPageToken: data.nextPageToken };
+      } else {
+        console.warn('Los datos recibidos no contienen mediaItems o no es un arreglo.');
+        return { mediaItems: [], nextPageToken: null };
+      }
+    } catch (error) {
+      console.error('Error obteniendo fotos del álbum:', error);
+      return { mediaItems: [], nextPageToken: null };
+    }
+  }
 
   scrollToTop() {
     this.document.body.scrollTop = 0;
