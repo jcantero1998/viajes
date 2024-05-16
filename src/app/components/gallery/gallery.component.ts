@@ -8,7 +8,7 @@ import { filter, map } from 'rxjs/operators';
 import { GalleryImage } from '../../model/gallery-image';
 import { HttpClient } from '@angular/common/http';
 import { Album } from 'src/app/model/album';
-import { PhotosFromAlbum } from 'src/app/model/photos-from-album';
+import { MediaItem, PhotosFromAlbum } from 'src/app/model/photos-from-album';
 import { GooglePhotosService } from 'src/app/services/google-photos.service';
 
 @Component({
@@ -46,10 +46,6 @@ export class GalleryComponent implements OnInit, OnDestroy {
         last: i === this.album.photosFromAlbum.mediaItems.length - 1,
       });
     }
-  }
-
-  getIndex(index: string): Observable<any> {
-    return this.http.get<any>(index);
   }
 
   openDialog(position: number): void {
@@ -101,7 +97,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
       this.loading = true;
       const data: PhotosFromAlbum = await firstValueFrom(this.googlePhotosService.getPhotosFromAlbum(id, nextPageToken));
       if (data && data.mediaItems && Array.isArray(data.mediaItems)) {
-        const filteredMediaItems = data.mediaItems.filter((item: any) => item.mimeType != "video/mp4");
+        const filteredMediaItems = data.mediaItems.filter((item: MediaItem) => item.mimeType != "video/mp4");
         return { mediaItems: filteredMediaItems, nextPageToken: data.nextPageToken };
       } else {
         console.warn('Los datos recibidos no contienen mediaItems o no es un arreglo.');

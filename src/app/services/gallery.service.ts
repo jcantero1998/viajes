@@ -16,7 +16,7 @@ export class GalleryService {
     return this.gallerySelected$.asObservable();
   }
 
-  selectImage(galleryImages: any, position: number): void {
+  selectImage(galleryImages: GalleryImage[], position: number): void {
     if(galleryImages){
       this.galleryImages = galleryImages;
     }

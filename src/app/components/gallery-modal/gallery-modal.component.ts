@@ -34,7 +34,7 @@ export class GalleryModalComponent implements OnInit, OnDestroy {
 
   changeImg(move: number): void {
     const position = this.image.position + move;
-    this.galleryService.selectImage(null, position);
+    this.galleryService.selectImage([], position);
   }
 
   ngOnDestroy(): void {

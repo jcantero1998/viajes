@@ -4,7 +4,7 @@ export interface SharedAlbumsForUser {
 
 export interface SharedAlbum {
   id: string;
-  title?: string;
+  title: string;
   productUrl: string;
   mediaItemsCount: string;
   coverPhotoBaseUrl?: string;

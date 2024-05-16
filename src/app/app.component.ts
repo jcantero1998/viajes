@@ -5,7 +5,7 @@ import { Album } from './model/album';
 import { firstValueFrom } from 'rxjs';
 import { GoogleApiService } from './services/google-api.service';
 import { SharedAlbum, SharedAlbumsForUser } from './model/shared-albums-for-user';
-import { PhotosFromAlbum } from './model/photos-from-album';
+import { MediaItem, PhotosFromAlbum } from './model/photos-from-album';
 
 @Component({
   selector: 'app-root',
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  async getAlbums() {
+  async getAlbums(): Promise<void> {
     try {
       const data: SharedAlbumsForUser = await firstValueFrom(this.googlePhotosService.getSharedAlbumsForUser());
 
@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
 
         //Filtramos los albumes y nos quedamos unicamente con los que tengan fotos
         const filteredAlbums = data.sharedAlbums.filter((element: SharedAlbum) => parseInt(element.mediaItemsCount) > 1);
-        const albumPromises = filteredAlbums.map(async (element: any) => {
+        const albumPromises = filteredAlbums.map(async (element: SharedAlbum) => {
           const photosFromAlbum: PhotosFromAlbum = await this.getPhotosFromAlbum(element.id);
           return {
             id: element.id,
@@ -64,7 +64,7 @@ export class AppComponent implements OnInit {
       const data: PhotosFromAlbum = await firstValueFrom(this.googlePhotosService.getPhotosFromAlbum(id));
 
       if (data && data.mediaItems && Array.isArray(data.mediaItems)) {
-        data.mediaItems = data.mediaItems.filter((item: any) => item.mimeType != "video/mp4");
+        data.mediaItems = data.mediaItems.filter((item: MediaItem) => item.mimeType != "video/mp4");
         return data;
       } else {
         console.warn('Los datos recibidos no contienen mediaItems o no es un arreglo.');
@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  selectedIndexChange(event:any){
+  selectedIndexChange(event: number){
     this.selectedAlbumIndex = event;
   }
 

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
+import { SharedAlbumsForUser } from '../model/shared-albums-for-user';
+import { PhotosFromAlbum } from '../model/photos-from-album';
 
 @Injectable({
   providedIn: 'root',
@@ -30,20 +32,20 @@ export class GooglePhotosService {
   }
 
   // Método para obtener álbumes compartidos por el usuario jcantero1998@gmail.com
-  getSharedAlbumsForUser(): Observable<any> {
+  getSharedAlbumsForUser(): Observable<SharedAlbumsForUser> {
     const url = `${this.API_URL}/sharedAlbums`;
     const headers = this.getAuthorizationHeader();
-    return this.http.get(url, { headers });
+    return this.http.get<SharedAlbumsForUser>(url, { headers });
   }
 
   // Método para obtener las fotos de un álbum específico, con posibilidad de cargar más fotos usando nextPageToken.
-  getPhotosFromAlbum(albumId: string, nextPageToken?: string): Observable<any> {
+  getPhotosFromAlbum(albumId: string, nextPageToken?: string): Observable<PhotosFromAlbum> {
     const url = `${this.API_URL}/mediaItems:search`;
     const headers = this.getAuthorizationHeader();
     const body: any = { albumId };
     if (nextPageToken) {
       body.pageToken = nextPageToken;
     }
-    return this.http.post(url, body, { headers });
+    return this.http.post<PhotosFromAlbum>(url, body, { headers });
   }
 }
