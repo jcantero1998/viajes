@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
   albums: Album[] = [];
   title = 'gallery';
   showScrollButton = false;
+  selectedAlbumIndex = 0;
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -75,20 +76,8 @@ export class AppComponent implements OnInit {
     }
   }
 
-  async loadMorePhotosFromAlbum(id: string, nextPageToken?: string): Promise<PhotosFromAlbum> {
-    try {
-      const data: PhotosFromAlbum = await firstValueFrom(this.googlePhotosService.getPhotosFromAlbum(id, nextPageToken));
-      if (data && data.mediaItems && Array.isArray(data.mediaItems)) {
-        const filteredMediaItems = data.mediaItems.filter((item: any) => item.mimeType != "video/mp4");
-        return { mediaItems: filteredMediaItems, nextPageToken: data.nextPageToken };
-      } else {
-        console.warn('Los datos recibidos no contienen mediaItems o no es un arreglo.');
-        return { mediaItems: [], nextPageToken: null };
-      }
-    } catch (error) {
-      console.error('Error obteniendo fotos del álbum:', error);
-      return { mediaItems: [], nextPageToken: null };
-    }
+  selectedIndexChange(event:any){
+    this.selectedAlbumIndex = event;
   }
 
   scrollToTop() {

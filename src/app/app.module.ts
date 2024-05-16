@@ -12,6 +12,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SpinnerInterceptor } from './interceptors/spinner.interceptor';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [AppComponent, GalleryComponent, GalleryModalComponent, SpinnerComponent],
@@ -24,6 +25,7 @@ import { SpinnerInterceptor } from './interceptors/spinner.interceptor';
     HammerModule,
     NgOptimizedImage,
     HttpClientModule,
+    InfiniteScrollModule,
     OAuthModule.forRoot(),
   ],
   providers: [

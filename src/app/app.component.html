@@ -6,9 +6,10 @@
 </div>
 
 <div class="content">
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" class="gallery-text">
+
+  <mat-tab-group (selectedIndexChange)="selectedIndexChange($event)" mat-stretch-tabs="false" mat-align-tabs="center" class="gallery-text">
     <mat-tab *ngFor="let album of albums; let index = index" label="{{album.title}}">
-      <app-gallery [album]="album"></app-gallery>
+      <app-gallery *ngIf="index===selectedAlbumIndex" [album]="album"></app-gallery>
     </mat-tab>
   </mat-tab-group>
 </div>
