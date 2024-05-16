@@ -9,4 +9,9 @@
       (click)="openDialog(item.position)">
     </mat-grid-tile>
   </mat-grid-list>
+
+  <div *ngIf="loading" class="spinner">
+    <mat-spinner color="warn"></mat-spinner>
+  </div>
+
 </section>

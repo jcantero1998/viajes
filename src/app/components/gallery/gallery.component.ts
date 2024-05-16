@@ -21,6 +21,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
   subscription: Subscription[] = [];
   columns = 5;
   gallery: GalleryImage[] = [];
+  loading: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -97,17 +98,22 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   async loadMorePhotosFromAlbum(id: string, nextPageToken?: string): Promise<PhotosFromAlbum> {
     try {
+      this.loading = true;
       const data: PhotosFromAlbum = await firstValueFrom(this.googlePhotosService.getPhotosFromAlbum(id, nextPageToken));
       if (data && data.mediaItems && Array.isArray(data.mediaItems)) {
         const filteredMediaItems = data.mediaItems.filter((item: any) => item.mimeType != "video/mp4");
         return { mediaItems: filteredMediaItems, nextPageToken: data.nextPageToken };
       } else {
         console.warn('Los datos recibidos no contienen mediaItems o no es un arreglo.');
+        this.loading = false;
         return { mediaItems: [], nextPageToken: null };
       }
     } catch (error) {
       console.error('Error obteniendo fotos del álbum:', error);
+      this.loading = false;
       return { mediaItems: [], nextPageToken: null };
+    } finally {
+      this.loading = false;
     }
   }
 
